@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_reparation_tree" model="ir.ui.view">
+        <field name="name">mecanicien.reparation.tree</field>
+        <field name="model">mecanicien.reparation</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="mecanicien_id"/>
+                <field name="voiture_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_reparation_form" model="ir.ui.view">
+        <field name="name">mecanicien.reparation.form</field>
+        <field name="model">mecanicien.reparation</field>
+        <field name="arch" type="xml">
+            <form string="Réparation">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date"/>
+                        <field name="mecanicien_id"/>
+                        <field name="voiture_id"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_start" type="object" string="Start" class="oe_highlight" states="draft"/>
+                    <button name="action_done" type="object" string="Done" class="oe_highlight" states="draft,in_progress"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_reparation_search" model="ir.ui.view">
+    <field name="name">mecanicien.reparation.search</field>
+    <field name="model">mecanicien.reparation</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="name"/>
+            <field name="state"/>
+        </search>
+    </field>
+</record>
+
+    <record id="action_reparation_tree" model="ir.actions.act_window">
+        <field name="name">Réparations</field>
+        <field name="res_model">mecanicien.reparation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_reparation_tree"/>
+        <field name="search_view_id" ref="view_reparation_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Créer une nouvelle réparation.</p>
+        </field>
+    </record>
+</odoo>

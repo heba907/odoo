@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="spare_part_confirm_wizard_form_view" model="ir.ui.view">
+            <field name="name">spare.part.confirm.wizard.form</field>
+            <field name="model">spare.part.confirm.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Confirmation">
+
+                    <h2>
+                        This will process the stock. Do you still want to continue?
+                    </h2>
+
+                    <group>
+                        <field name="spare_part_stock_id" invisible="1"/>
+                        <field name="spare_part_stock_line_id" invisible="1"/>
+                        <field name="spare_part_stock_in_id" invisible="1"/>
+                        <field name="is_confirm" invisible="1"/>
+                        <field name="is_return" invisible="1"/>
+                        <field name="is_reverse" invisible="1"/>
+                        <field name="is_done" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

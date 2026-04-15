@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vue Liste -->
+    <record id="view_cm_patient_tree" model="ir.ui.view">
+        <field name="name">cm.patient.tree</field>
+        <field name="model">cm.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_ref"/>
+                <field name="name"/>
+                <field name="age"/> 
+                <field name="display_name"/> 
+                <field name="date_of_birth"/>
+                <field name="gender"/>
+                <field name="phone"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Formulaire -->
+    <record id="view_cm_patient_form" model="ir.ui.view">
+        <field name="name">cm.patient.form</field>
+        <field name="model">cm.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_ref"/>
+                            <field name="name"/>
+                            <field name="date_of_birth"/>
+                            <field name="age" readonly="1"/> <!-- AJOUT -->
+                            <field name="display_name" readonly="1"/> <!-- AJOUT -->
+                            <field name="gender"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_cm_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">cm.patient</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Vues de recherche sur cm.patient -->
+    <record id="view_cm_patient_search" model="ir.ui.view">
+        <field name="name">cm.patient.search</field>
+        <field name="model">cm.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Actifs" name="active_patients" domain="[('active','=',True)]"/>
+                <filter string="Femmes" name="female_only" domain="[('gender','=','female')]"/>
+                <filter string="Hommes" name="male_only" domain="[('gender','=','male')]"/>
+
+                <group expand="0" string="Regrouper par">
+                    <filter string="Sexe" name="group_by_gender" context="{'group_by':'gender'}"/>
+                    <filter string="Actif" name="group_by_active" context="{'group_by':'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

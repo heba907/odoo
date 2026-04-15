@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spare Part Management Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .section {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: left;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+        }
+        .section h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .section p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .section .placeholder {
+            margin: 15px 0;
+            padding: 20px;
+            background: #eaeaea;
+            border: 2px dashed #aaa;
+            text-align: center;
+            border-radius: 8px;
+            color: #555;
+        }
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 100px;
+        }
+        .flow-box {
+            background: white;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            width: 60%;
+        }
+        .arrow {
+            font-size: 24px;
+            margin: 5px 0;
+        }
+        .youtube-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        .youtube-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #ff0000;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        .youtube-btn:hover {
+            background: #cc0000;
+        }
+        footer {
+            background: #222;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        footer a {
+            color: #00aced;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spare Part Management Flow</h1>
+
+    <!-- Setup Instructions Section -->
+    <div class="section">
+        <h2>🔧 Setup Instructions</h2>
+        <p>1️⃣ First, you need to add the <strong>Spare Part Tab</strong> in the <strong>Product</strong> form (for component items).</p>
+        <div class="placeholder"><img src="image/product.png" style="width:80% !important;"></div>
+        <br/><br/>
+        <p>2️⃣ If you don’t see it, you can create it under <strong>Inventory &gt; Spare Part</strong>.</p>
+        <div class="placeholder"><img src="image/part.png" style="width:80% !important;">
+            <br/><br/>
+
+        <p>3️⃣ For line checking, use the <strong>Spare Part Line</strong>.</p>
+        <div class="placeholder"><img src="image/line.png" style="width:80% !important;"></div>
+            <br/><br/>
+    </div>
+        <br/>
+
+    <!-- Flow Section -->
+    <div class="flow-container">
+        <div class="flow-box">1. Add Spare Parts to Stock <br> - Register new spare parts in the system <br> - Categorize and label parts</div>
+        <div class="arrow">⬇</div>
+        <div class="flow-box">2. Track and Manage Stock Levels <br> - Monitor real-time stock levels <br> - Generate stock reports</div>
+        <div class="arrow">⬇</div>
+        <div class="flow-box">3. Move Stock Between Locations <br> - Transfer parts to different warehouses <br> - Maintain movement history</div>
+        <div class="arrow">⬇</div>
+        <div class="flow-box">4. Confirm and Validate Stock Movements <br> - Approve and verify stock movements <br> - Prevent unauthorized transfers</div>
+        <div class="arrow">⬇</div>
+        <div class="flow-box">5. Process Stock Transactions <br> - Automate stock allocation <br> - Update system records</div>
+        <div class="arrow">⬇</div>
+        <div class="flow-box">6. Return or Cancel Stock When Necessary <br> - Handle defective or incorrect parts <br> - Reverse transactions when required</div>
+    </div>
+    <br/>
+    <!-- YouTube Section -->
+    <div class="youtube-section">
+        <p>🎥 Check out the full flow on YouTube:</p>
+        <a class="youtube-btn" href="https://youtu.be/azlPk9FBUkA" target="_blank">▶ Watch on YouTube</a>
+    </div>
+        <br/>
+
+    <footer>
+        <p><strong>NexOrionis Techsphere</strong></p>
+        <p>📧 Support: <a href="mailto:nexorionis.info@gmail.com">nexorionis.info@gmail.com</a></p>
+        <p>🌐 Website: <a href="https://nexorionis.odoo.com" target="_blank">nexorionis.odoo.com</a></p>
+    </footer>
+</body>
+</html>

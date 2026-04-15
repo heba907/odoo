@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mecanicien_tree" model="ir.ui.view">
+        <field name="name">mecanicien.mecanicien.tree</field>
+        <field name="model">mecanicien.mecanicien</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="specialite"/>
+                <field name="telephone"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mecanicien_form" model="ir.ui.view">
+        <field name="name">mecanicien.mecanicien.form</field>
+        <field name="model">mecanicien.mecanicien</field>
+        <field name="arch" type="xml">
+            <form string="Mécanicien">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="specialite"/>
+                        <field name="telephone"/>
+                    </group>
+                    <notebook>
+                        <page string="Réparations">
+                            <field name="reparation_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="voiture_id"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mecanicien_search" model="ir.ui.view">
+        <field name="name">mecanicien.mecanicien.search</field>
+        <field name="model">mecanicien.mecanicien</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="telephone"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_mecanicien_tree" model="ir.actions.act_window">
+        <field name="name">Mécaniciens</field>
+        <field name="res_model">mecanicien.mecanicien</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_mecanicien_tree"/>
+        <field name="search_view_id" ref="view_mecanicien_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Créer un nouveau mécanicien.</p>
+        </field>
+    </record>
+</odoo>

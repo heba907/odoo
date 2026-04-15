@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_garage_root" name="Garage Management" sequence="10"/>
+    <menuitem id="menu_mecanicien_root" name="Mécaniciens" parent="menu_garage_root" action="action_mecanicien_tree" sequence="10"/>
+    <menuitem id="menu_voiture_root" name="Voitures" parent="menu_garage_root" action="action_voiture_tree" sequence="20"/>
+    <menuitem id="menu_reparation_root" name="Réparations" parent="menu_garage_root" action="action_reparation_tree" sequence="30"/>
+</odoo>

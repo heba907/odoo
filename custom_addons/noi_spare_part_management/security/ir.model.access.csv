@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_spare_part_line,access.product.spare.part.line,model_product_spare_part_line,base.group_user,1,1,1,1
+access_spare_part_stock,access.spare.part.stock,model_spare_part_stock,base.group_user,1,1,1,1
+access_spare_part_stock_line,access.spare.part.stock.line,model_spare_part_stock_line,base.group_user,1,1,1,1
+access_spare_part_stock_in,access.spare.part.stock.in,model_spare_part_stock_in,base.group_user,1,1,1,1
+access_spare_part_confirm_wizard,access.spare_part_confirm_wizard,model_spare_part_confirm_wizard,base.group_user,1,1,1,1

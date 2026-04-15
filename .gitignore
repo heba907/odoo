@@ -1,0 +1,7 @@
+C:\Users\LENOVO\odoo15-class__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.zip
+.env
+*.log

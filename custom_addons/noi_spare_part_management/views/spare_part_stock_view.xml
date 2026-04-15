@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Template View -->
+    <record id="view_product_template_form" model="ir.ui.view">
+        <field name="name">product.template.form.spare.parts</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="spare_part" string="Spare Parts">
+                    <field name="spare_part_lines" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="cost"/>
+                            <field name="total_cost"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Spare Part Stock Search View -->
+    <record id="view_spare_part_stock_search" model="ir.ui.view">
+        <field name="name">spare.part.stock.search</field>
+        <field name="model">spare.part.stock</field>
+        <field name="arch" type="xml">
+            <search string="Spare Part">
+                <field name="product_id" string="Product" filter_domain="[('product_id', 'ilike', self)]"/>
+                <field name="stock_lines" string="Line Product" filter_domain="[('stock_lines.product_id', 'ilike', self)]"/>
+                <field name="stock_in_lines" string="In Line Product" filter_domain="[('stock_in_lines.product_id', 'ilike', self)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_location" string="Location" context="{'group_by': 'location_id'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Spare Part Stock Form View -->
+    <record id="view_spare_part_stock_form" model="ir.ui.view">
+        <field name="name">spare.part.stock.form</field>
+        <field name="model">spare.part.stock</field>
+        <field name="arch" type="xml">
+            <form string="Spare Part Stock">
+                <header>
+                    <button name="action_confirm" class="btn-primary" states="draft" type="object" string="Confirm" data-hotkey="w"/>
+                    <button name="action_done" states="confirm" class="btn-success" type="object" string="Done" data-hotkey="w"/>
+                    <button name="action_cancel" states="draft" class="btn-danger" type="object" string="Cancel" data-hotkey="w"/>
+                    <button name="action_reset_to_draft" class="btn-warning" states="confirm" type="object" string="Return" data-hotkey="w"/>
+                    <button name="action_add_stock_in" class="btn-warning" states="confirm" type="object" string="Reverse" data-hotkey="w"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,reverse,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                    name="action_move_lines"
+                                    string="Product Moves"
+                                    icon="fa-exchange"
+                                    attrs="{'invisible': [('state', '=', 'draft')]}">
+                            </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="lot_id" attrs="{'readonly': [('state', '!=', 'draft')],'invisible': [('product_tracking', '=', 'none')]}" context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                            <field name="quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="uom_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="cost" attrs="{'readonly': [('state', 'not in', ['draft','confirm'])]}"/>
+                            <field name="total_cost"/>
+                            <field name="product_tracking" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="location_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="stock_out" string="Stock Lines">
+                            <field name="stock_lines" nolabel="1">
+                                <tree editable="bottom" decoration-success="state == 'done'">
+                                    <field name="product_id" optional="show" attrs="{'readonly': [('parent.state', '!=', 'draft')]}"/>
+                                    <field name="lot_id" optional="show" context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                                    <field name="origin_quantity" invisible="1"/>
+                                    <field name="quantity" optional="show" attrs="{'readonly': [('parent.state', '!=', 'draft')]}"/>
+                                    <field name="uom_id" optional="show"/>
+                                    <field name="quantity_done" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}" optional="show" readonly="1"/>
+                                    <field name="product_qty" attrs="{'column_invisible': [('parent.state', '=', 'draft')],'readonly': [('state', '!=', 'confirm')]}" optional="show"/>
+                                    <field name="cost" optional="show"/>
+                                    <field name="product_cost" optional="show" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+                                    <field name="done_cost" optional="show" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+                                    <field name="total_cost" optional="show" />
+                                    <field name="location_id" invisible="1"/>
+                                    <field name="to_location_id" attrs="{'readonly': [('state', 'not in', ['draft','confirm'])],'require': [('state', '!=', 'draft')]}"/>
+                                    <button name="action_done" states="confirm,progress" class="btn-success" type="object" string="Done" data-hotkey="w"/>
+                                    <button name="action_return" states="progress,done" class="btn-warning" type="object" string="Return" data-hotkey="w"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="stock_in" string="Stock In" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <field name="stock_in_lines" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="spare_part_line_id" optional="show"/>
+                                    <field name="product_id" invisible="1"/>
+                                    <field name="stock_id" invisible="1"/>
+                                    <field name="lot_id" optional="show" context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                                    <field name="quantity" optional="show"/>
+                                    <field name="uom_id" optional="show"/>
+<!--                                    <field name="cost" optional="show"/>-->
+<!--                                    <field name="total_cost" optional="show"/>-->
+                                    <field name="location_id" optional="show" required="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                             </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Spare Part Stock Tree View -->
+    <record id="view_spare_part_stock_tree" model="ir.ui.view">
+        <field name="name">spare.part.stock.tree</field>
+        <field name="model">spare.part.stock</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="lot_id" optional="show"/>
+                <field name="quantity" optional="show"/>
+                <field name="uom_id" optional="show"/>
+                <field name="location_id" optional="show"/>
+                <field name="company_id" optional="show"/>
+                <field name="state" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" decoration-warning="state == 'reverse'" decoration-info="state == 'confirm'" widget="badge" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Spare Part Stock Search View -->
+    <record id="view_spare_part_stock_line_search" model="ir.ui.view">
+        <field name="name">spare.part.stock.line.search</field>
+        <field name="model">spare.part.stock.line</field>
+        <field name="arch" type="xml">
+            <search string="Spare Part Line">
+                <field name="product_id" string="Product" filter_domain="[('product_id', 'ilike', self)]"/>
+                <field name="lot_id" string="Lot"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_stock_line" string="Spare Part" context="{'group_by': 'stock_id'}"/>
+                    <filter name="group_location" string="Location" context="{'group_by': 'location_id'}"/>
+                    <filter name="group_to_location" string="To Location" context="{'group_by': 'to_location_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Spare Part Stock Line Tree View -->
+    <record id="view_spare_part_stock_line_tree" model="ir.ui.view">
+        <field name="name">spare.part.stock.line.tree</field>
+        <field name="model">spare.part.stock.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="false" delete="false">
+                <field name="stock_id" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="quantity" optional="show" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="uom_id" optional="show"/>
+                <field name="quantity_done" optional="show" readonly="1"/>
+                <field name="product_qty" attrs="{'readonly': [('state', '!=', 'confirm')]}" optional="show"/>
+                <field name="cost" optional="show"/>
+                <field name="product_cost" optional="show"/>
+                <field name="done_cost" optional="show"/>
+                <field name="total_cost" optional="show" />
+                <field name="location_id" optional="show"/>
+                <field name="to_location_id" optional="show"/>
+                <field name="company_id" optional="show"/>
+                <field name="state" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" decoration-warning="state == 'progress'" decoration-info="state == 'confirm'" widget="badge" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_spare_part_stock" model="ir.actions.act_window">
+        <field name="name">Spare Part</field>
+        <field name="res_model">spare.part.stock</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_spare_part_stock_line" model="ir.actions.act_window">
+        <field name="name">Spare Part Stock Line</field>
+        <field name="res_model">spare.part.stock.line</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_group_stock_line': 1}</field>
+    </record>
+
+    <record id="action_done_stock_line" model="ir.actions.server">
+            <field name="name">Mark as Done</field>
+            <field name="model_id" ref="noi_spare_part_management.model_spare_part_stock_line"/>
+            <field name="binding_model_id" ref="noi_spare_part_management.model_spare_part_stock_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_done()</field>
+        </record>
+
+
+    <menuitem id="menu_spare_part_stock"
+              name="Spare Part"
+              parent="stock.menu_stock_root"
+              sequence="3"
+    />
+    <menuitem id="menu_spare_part_stock_action"
+              name="Spare Part"
+              parent="noi_spare_part_management.menu_spare_part_stock"
+              action="noi_spare_part_management.action_spare_part_stock"
+              sequence="5"
+    />
+    <menuitem id="menu_spare_part_stock_line"
+              name="Spare Part Line"
+              parent="noi_spare_part_management.menu_spare_part_stock"
+              action="noi_spare_part_management.action_spare_part_stock_line"
+              sequence="10"
+    />
+</odoo>

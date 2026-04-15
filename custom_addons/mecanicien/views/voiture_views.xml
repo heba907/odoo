@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_voiture_tree" model="ir.ui.view">
+        <field name="name">mecanicien.voiture.tree</field>
+        <field name="model">mecanicien.voiture</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="mecanicien_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_voiture_form" model="ir.ui.view">
+        <field name="name">mecanicien.voiture.form</field>
+        <field name="model">mecanicien.voiture</field>
+        <field name="arch" type="xml">
+            <form string="Voiture">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="marque"/>
+                        <field name="modele"/>
+                        <field name="mecanicien_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Réparations">
+                            <field name="reparation_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="mecanicien_id"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_voiture_search" model="ir.ui.view">
+        <field name="name">mecanicien.voiture.search</field>
+        <field name="model">mecanicien.voiture</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="mecanicien_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_voiture_tree" model="ir.actions.act_window">
+        <field name="name">Voitures</field>
+        <field name="res_model">mecanicien.voiture</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_voiture_tree"/>
+        <field name="search_view_id" ref="view_voiture_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Créer une nouvelle voiture.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mecanicien,access_mecanicien,model_mecanicien_mecanicien,base.group_user,1,1,1,1
+access_voiture,access_voiture,model_mecanicien_voiture,base.group_user,1,1,1,1
+access_reparation,access_reparation,model_mecanicien_reparation,base.group_user,1,1,1,1

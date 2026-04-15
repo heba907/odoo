@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu principal -->
+    <menuitem id="cm_menu_root" name="Cabinet Médical" sequence="10"/>
+
+    <!-- Sous-menu : Patients -->
+    <menuitem id="cm_menu_patient"
+              name="Patients"
+              parent="cm_menu_root"
+              action="action_cm_patient"
+              sequence="10"/>
+</odoo>
