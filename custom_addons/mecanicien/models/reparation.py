@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from ..services.blockchain_service import enregistrer_sur_blockchain
 
 
 class Reparation(models.Model):
@@ -15,21 +16,34 @@ class Reparation(models.Model):
     name = fields.Char(string='Référence', required=True)
     date = fields.Date(string='Date', default=fields.Date.context_today)
     description = fields.Text(string='Description')
+
     mecanicien_id = fields.Many2one(
-        comodel_name='mecanicien.mecanicien',
+        'mecanicien.mecanicien',
         string='Mécanicien',
-        required=True,
+        required=True
     )
+
     voiture_id = fields.Many2one(
-        comodel_name='mecanicien.voiture',
+        'mecanicien.voiture',
         string='Voiture',
-        required=True,
+        required=True
     )
+
     state = fields.Selection(
         selection=STATE_SELECTION,
         string='Statut',
         default='draft',
-        required=True,
+        required=True
+    )
+
+    blockchain_tx = fields.Char(
+        string='Transaction Blockchain',
+        readonly=True
+    )
+
+    blockchain_hash = fields.Char(
+        string='Hash Blockchain',
+        readonly=True
     )
 
     @api.constrains('mecanicien_id', 'voiture_id')
@@ -39,7 +53,11 @@ class Reparation(models.Model):
                 raise ValidationError(
                     'Une réparation doit être liée à un mécanicien et à une voiture.'
                 )
-            if record.voiture_id.mecanicien_id and record.voiture_id.mecanicien_id != record.mecanicien_id:
+
+            if (
+                record.voiture_id.mecanicien_id
+                and record.voiture_id.mecanicien_id != record.mecanicien_id
+            ):
                 raise ValidationError(
                     'La voiture sélectionnée est affectée à un autre mécanicien.'
                 )
@@ -53,3 +71,22 @@ class Reparation(models.Model):
         for record in self:
             if record.state in ('draft', 'in_progress'):
                 record.state = 'done'
+
+    def action_blockchain_transfer(self):
+        for record in self:
+            if record.state != 'done':
+                raise ValidationError(
+                    "La réparation doit être terminée avant envoi blockchain."
+                )
+
+            if record.blockchain_tx:
+                raise ValidationError(
+                    "Cette réparation est déjà enregistrée sur la blockchain."
+                )
+
+            tx_hash, hash_value = enregistrer_sur_blockchain(record)
+
+            record.write({
+                'blockchain_tx': tx_hash,
+                'blockchain_hash': hash_value,
+            })
